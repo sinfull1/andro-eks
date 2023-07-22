@@ -1,0 +1,14 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: loki-http-proxy
+  namespace: loki-ns
+spec:
+  routes:
+  - services:
+    - name: gf-loki-stack
+      port: 3100
+    pathRewritePolicy:
+      replacePrefix:
+      - prefix: /loki
+        replacement: /

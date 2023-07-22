@@ -1,0 +1,14 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: kafka-metric-http-proxy
+  namespace: kafka
+spec:
+  routes:
+    - services:
+        - name: kafka-jmx-metrics
+          port: 5556
+      pathRewritePolicy:
+        replacePrefix:
+          - prefix: /kafka
+            replacement: /

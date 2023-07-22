@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kafka-jmx-monitor
+  namespace: kafka
+  labels:
+    app: kafka-jmx-monitor
+    instance: primary
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kafka
+  namespaceSelector:
+    matchNames:
+      - kafka
+  endpoints:
+  - port: http-metrics
+    interval: 30s
+    path: /
+    scheme: http
+    honorLabels: true

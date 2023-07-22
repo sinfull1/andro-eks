@@ -1,0 +1,22 @@
+apiVersion: v1
+items:
+  - apiVersion: projectcontour.io/v1
+    kind: HTTPProxy
+    metadata:
+      name: basic
+      namespace: default
+    spec:
+      includes:
+        - conditions:
+            - prefix: /kafka
+          name: kafka-metric-http-proxy
+          namespace: kafka
+        - conditions:
+            - prefix: /mimir
+          name: mimir-http-proxy
+          namespace: mimir
+      virtualhost:
+        fqdn: a638ee26feaa8478c83b32dd5c8f6b3a-319883310.ap-south-1.elb.amazonaws.com
+kind: List
+metadata:
+  resourceVersion: ""

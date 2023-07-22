@@ -1,0 +1,10 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: mimir-http-proxy
+  namespace:  default
+spec:
+  routes:
+  - services:
+    - name: my-release-grafana-mimir-query-frontend
+      port: 8080

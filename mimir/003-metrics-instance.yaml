@@ -1,0 +1,26 @@
+apiVersion: v1
+data: {}
+kind: Secret
+metadata:
+  name: metrics-secret
+  namespace: default
+stringData:
+  password: eyJrIjoiN2M3ZGM0OWM1MzFmMzY3MzBiNzk5ZWYzYjc2N2UxYzg5NDgxNzgyYyIsIm4iOiJzdGFjay01Mzg2MDQtZWFzeXN0YXJ0LXByb20tcHVibGlzaGVyIiwiaWQiOjc5NjY5OX0=
+  username: "778038"
+type: Opaque
+---
+
+apiVersion: monitoring.grafana.com/v1alpha1
+kind: MetricsInstance
+metadata:
+  labels:
+    agent: grafana-agent
+  name: grafana-agent
+  namespace: default
+spec:
+  remoteWrite:
+    - url: http://mimir-nginx.mimir.svc.cluster.local/api/v1/push
+  serviceMonitorNamespaceSelector: {}
+  serviceMonitorSelector:
+    matchLabels:
+      instance: primary

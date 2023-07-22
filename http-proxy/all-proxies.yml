@@ -1,0 +1,26 @@
+apiVersion: v1
+items:
+- apiVersion: projectcontour.io/v1
+  kind: HTTPProxy
+  metadata:
+    name: basic
+    namespace: default
+  spec:
+    includes:
+    - conditions:
+      - prefix: /loki
+      name: loki-http-proxy
+      namespace: loki-ns
+    - conditions:
+      - prefix: /mimir
+      name: mimir-http-proxy
+      namespace: mimir
+    - conditions:
+      - prefix: /kafka
+      name: kafka-http-proxy
+      namespace: kafka-proxy
+    virtualhost:
+      fqdn: abeec7bfbb9584f35beda7c61c8a594f-2079222315.ap-south-1.elb.amazonaws.com
+kind: List
+metadata:
+  resourceVersion: ""

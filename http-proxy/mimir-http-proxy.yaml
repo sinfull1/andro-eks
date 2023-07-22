@@ -1,0 +1,14 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: mimir-http-proxy
+  namespace:  mimir
+spec:
+  routes:
+  - services:
+    - name: mimir-nginx
+      port: 80
+    pathRewritePolicy:
+      replacePrefix:
+      - prefix: /mimir
+        replacement: /

@@ -1,0 +1,1197 @@
+target: query-frontend
+multitenancy_enabled: true
+no_auth_tenant: anonymous
+shutdown_delay: 0s
+max_separate_metrics_groups_per_user: 1000
+api:
+  skip_label_name_validation_header_enabled: false
+  alertmanager_http_prefix: /alertmanager
+  prometheus_http_prefix: /prometheus
+server:
+  http_listen_network: tcp
+  http_listen_address: ""
+  http_listen_port: 8080
+  http_listen_conn_limit: 0
+  grpc_listen_network: tcp
+  grpc_listen_address: ""
+  grpc_listen_port: 9095
+  grpc_listen_conn_limit: 0
+  tls_cipher_suites: ""
+  tls_min_version: ""
+  http_tls_config:
+    cert_file: ""
+    key_file: ""
+    client_auth_type: ""
+    client_ca_file: ""
+  grpc_tls_config:
+    cert_file: ""
+    key_file: ""
+    client_auth_type: ""
+    client_ca_file: ""
+  register_instrumentation: true
+  graceful_shutdown_timeout: 30s
+  http_server_read_timeout: 30s
+  http_server_write_timeout: 2m0s
+  http_server_idle_timeout: 2m0s
+  grpc_server_max_recv_msg_size: 104857600
+  grpc_server_max_send_msg_size: 104857600
+  grpc_server_max_concurrent_streams: 1000
+  grpc_server_max_connection_idle: 1m0s
+  grpc_server_max_connection_age: 2m0s
+  grpc_server_max_connection_age_grace: 5m0s
+  grpc_server_keepalive_time: 2h0m0s
+  grpc_server_keepalive_timeout: 20s
+  grpc_server_min_time_between_pings: 10s
+  grpc_server_ping_without_stream_allowed: true
+  log_format: logfmt
+  log_level: info
+  log_source_ips_enabled: false
+  log_source_ips_header: ""
+  log_source_ips_regex: ""
+  log_request_at_info_level_enabled: false
+  http_path_prefix: ""
+distributor:
+  pool:
+    client_cleanup_period: 15s
+    health_check_ingesters: true
+  ha_tracker:
+    enable_ha_tracker: false
+    ha_tracker_update_timeout: 15s
+    ha_tracker_update_timeout_jitter_max: 5s
+    ha_tracker_failover_timeout: 30s
+    kvstore:
+      store: consul
+      prefix: ha-tracker/
+      consul:
+        host: localhost:8500
+        acl_token: ""
+        http_client_timeout: 20s
+        consistent_reads: false
+        watch_rate_limit: 1
+        watch_burst_size: 1
+        cas_retry_delay: 1s
+      etcd:
+        endpoints: []
+        dial_timeout: 10s
+        max_retries: 10
+        tls_enabled: false
+        tls_cert_path: ""
+        tls_key_path: ""
+        tls_ca_path: ""
+        tls_server_name: ""
+        tls_insecure_skip_verify: false
+        tls_cipher_suites: ""
+        tls_min_version: ""
+        username: ""
+        password: ""
+      multi:
+        primary: ""
+        secondary: ""
+        mirror_enabled: false
+        mirror_timeout: 2s
+  max_recv_msg_size: 104857600
+  remote_timeout: 2s
+  ring:
+    kvstore:
+      store: memberlist
+      prefix: collectors/
+      consul:
+        host: localhost:8500
+        acl_token: ""
+        http_client_timeout: 20s
+        consistent_reads: false
+        watch_rate_limit: 1
+        watch_burst_size: 1
+        cas_retry_delay: 1s
+      etcd:
+        endpoints: []
+        dial_timeout: 10s
+        max_retries: 10
+        tls_enabled: false
+        tls_cert_path: ""
+        tls_key_path: ""
+        tls_ca_path: ""
+        tls_server_name: ""
+        tls_insecure_skip_verify: false
+        tls_cipher_suites: ""
+        tls_min_version: ""
+        username: ""
+        password: ""
+      multi:
+        primary: ""
+        secondary: ""
+        mirror_enabled: false
+        mirror_timeout: 2s
+    heartbeat_period: 15s
+    heartbeat_timeout: 1m0s
+    instance_id: mimir-query-frontend-57d777cc86-7w8zx
+    instance_interface_names:
+      - eth0
+    instance_port: 0
+    instance_addr: ""
+  instance_limits:
+    max_ingestion_rate: 0
+    max_inflight_push_requests: 2000
+    max_inflight_push_requests_bytes: 0
+  forwarding:
+    enabled: false
+    request_concurrency: 10
+    request_timeout: 2s
+    propagate_errors: true
+    grpc_client:
+      max_recv_msg_size: 104857600
+      max_send_msg_size: 104857600
+      grpc_compression: ""
+      rate_limit: 0
+      rate_limit_burst: 0
+      backoff_on_ratelimits: false
+      backoff_config:
+        min_period: 100ms
+        max_period: 10s
+        max_retries: 10
+      tls_enabled: false
+      tls_cert_path: ""
+      tls_key_path: ""
+      tls_ca_path: ""
+      tls_server_name: ""
+      tls_insecure_skip_verify: false
+      tls_cipher_suites: ""
+      tls_min_version: ""
+  ephemeral_series_enabled: false
+querier:
+  iterators: false
+  batch_iterators: true
+  query_ingesters_within: 13h0m0s
+  query_store_after: 12h0m0s
+  max_query_into_future: 10m0s
+  store_gateway_client:
+    tls_enabled: false
+    tls_cert_path: ""
+    tls_key_path: ""
+    tls_ca_path: ""
+    tls_server_name: ""
+    tls_insecure_skip_verify: false
+    tls_cipher_suites: ""
+    tls_min_version: ""
+  shuffle_sharding_ingesters_enabled: true
+  max_concurrent: 16
+  timeout: 2m0s
+  max_samples: 50000000
+  default_evaluation_interval: 1m0s
+  lookback_delta: 5m0s
+ingester_client:
+  grpc_client_config:
+    max_recv_msg_size: 104857600
+    max_send_msg_size: 104857600
+    grpc_compression: ""
+    rate_limit: 0
+    rate_limit_burst: 0
+    backoff_on_ratelimits: false
+    backoff_config:
+      min_period: 100ms
+      max_period: 10s
+      max_retries: 10
+    tls_enabled: false
+    tls_cert_path: ""
+    tls_key_path: ""
+    tls_ca_path: ""
+    tls_server_name: ""
+    tls_insecure_skip_verify: false
+    tls_cipher_suites: ""
+    tls_min_version: ""
+ingester:
+  ring:
+    kvstore:
+      store: memberlist
+      prefix: collectors/
+      consul:
+        host: localhost:8500
+        acl_token: ""
+        http_client_timeout: 20s
+        consistent_reads: false
+        watch_rate_limit: 1
+        watch_burst_size: 1
+        cas_retry_delay: 1s
+      etcd:
+        endpoints: []
+        dial_timeout: 10s
+        max_retries: 10
+        tls_enabled: false
+        tls_cert_path: ""
+        tls_key_path: ""
+        tls_ca_path: ""
+        tls_server_name: ""
+        tls_insecure_skip_verify: false
+        tls_cipher_suites: ""
+        tls_min_version: ""
+        username: ""
+        password: ""
+      multi:
+        primary: ""
+        secondary: ""
+        mirror_enabled: false
+        mirror_timeout: 2s
+    heartbeat_period: 15s
+    heartbeat_timeout: 1m0s
+    replication_factor: 3
+    zone_awareness_enabled: true
+    excluded_zones: ""
+    tokens_file_path: /data/tokens
+    num_tokens: 512
+    instance_id: mimir-query-frontend-57d777cc86-7w8zx
+    instance_interface_names:
+      - eth0
+    instance_port: 0
+    instance_addr: ""
+    instance_availability_zone: ""
+    unregister_on_shutdown: false
+    observe_period: 0s
+    min_ready_duration: 15s
+    final_sleep: 0s
+    readiness_check_ring_health: false
+  metadata_retain_period: 10m0s
+  rate_update_period: 15s
+  active_series_metrics_enabled: true
+  active_series_metrics_update_period: 1m0s
+  active_series_metrics_idle_timeout: 10m0s
+  tsdb_config_update_period: 15s
+  instance_limits:
+    max_ingestion_rate: 0
+    max_tenants: 0
+    max_series: 0
+    max_ephemeral_series: 0
+    max_inflight_push_requests: 30000
+  ignore_series_limit_for_metric_names: ""
+flusher:
+  exit_after_flush: true
+limits:
+  request_rate: 0
+  request_burst_size: 0
+  ingestion_rate: 10000
+  ingestion_burst_size: 200000
+  accept_ha_samples: false
+  ha_cluster_label: cluster
+  ha_replica_label: __replica__
+  ha_max_clusters: 100
+  drop_labels: []
+  max_label_name_length: 1024
+  max_label_value_length: 2048
+  max_label_names_per_series: 30
+  max_metadata_length: 1024
+  creation_grace_period: 10m
+  enforce_metadata_metric_name: true
+  ingestion_tenant_shard_size: 0
+  max_global_series_per_user: 150000
+  max_global_series_per_metric: 0
+  max_ephemeral_series_per_user: 0
+  max_global_metadata_per_user: 0
+  max_global_metadata_per_metric: 0
+  max_global_exemplars_per_user: 0
+  active_series_custom_trackers: {}
+  out_of_order_time_window: 0s
+  separate_metrics_group_label: ""
+  max_fetched_chunks_per_query: 2000000
+  max_fetched_series_per_query: 0
+  max_fetched_chunk_bytes_per_query: 0
+  max_query_lookback: 0s
+  max_query_length: 0s
+  max_partial_query_length: 0s
+  max_query_parallelism: 240
+  max_labels_query_length: 0s
+  max_cache_freshness: 10m
+  max_queriers_per_tenant: 0
+  query_sharding_total_shards: 16
+  query_sharding_max_sharded_queries: 128
+  split_instant_queries_by_interval: 0s
+  max_total_query_length: 500d
+  cardinality_analysis_enabled: false
+  label_names_and_values_results_max_size_bytes: 419430400
+  label_values_max_cardinality_label_names_per_request: 100
+  ruler_evaluation_delay_duration: 0s
+  ruler_tenant_shard_size: 0
+  ruler_max_rules_per_rule_group: 20
+  ruler_max_rule_groups_per_tenant: 70
+  ruler_recording_rules_evaluation_enabled: true
+  ruler_alerting_rules_evaluation_enabled: true
+  store_gateway_tenant_shard_size: 0
+  compactor_blocks_retention_period: 0s
+  compactor_split_and_merge_shards: 0
+  compactor_split_groups: 1
+  compactor_tenant_shard_size: 0
+  compactor_partial_block_deletion_delay: 0s
+  compactor_block_upload_enabled: false
+  s3_sse_type: ""
+  s3_sse_kms_key_id: ""
+  s3_sse_kms_encryption_context: ""
+  alertmanager_receivers_firewall_block_cidr_networks: ""
+  alertmanager_receivers_firewall_block_private_addresses: false
+  alertmanager_notification_rate_limit: 0
+  alertmanager_notification_rate_limit_per_integration: {}
+  alertmanager_max_config_size_bytes: 0
+  alertmanager_max_templates_count: 0
+  alertmanager_max_template_size_bytes: 0
+  alertmanager_max_dispatcher_aggregation_groups: 0
+  alertmanager_max_alerts_count: 0
+  alertmanager_max_alerts_size_bytes: 0
+  forwarding_endpoint: ""
+  forwarding_drop_older_than: 0s
+  forwarding_rules: {}
+  ephemeral_series_matchers: {}
+frontend_worker:
+  frontend_address: ""
+  scheduler_address: mimir-query-scheduler-headless.mimir.svc:9095
+  dns_lookup_duration: 10s
+  id: ""
+  grpc_client_config:
+    max_recv_msg_size: 104857600
+    max_send_msg_size: 419430400
+    grpc_compression: ""
+    rate_limit: 0
+    rate_limit_burst: 0
+    backoff_on_ratelimits: false
+    backoff_config:
+      min_period: 100ms
+      max_period: 10s
+      max_retries: 10
+    tls_enabled: false
+    tls_cert_path: ""
+    tls_key_path: ""
+    tls_ca_path: ""
+    tls_server_name: ""
+    tls_insecure_skip_verify: false
+    tls_cipher_suites: ""
+    tls_min_version: ""
+frontend:
+  log_queries_longer_than: 0s
+  max_body_size: 10485760
+  query_stats_enabled: true
+  max_outstanding_per_tenant: 100
+  querier_forget_delay: 0s
+  scheduler_address: mimir-query-scheduler-headless.mimir.svc:9095
+  scheduler_dns_lookup_period: 10s
+  scheduler_worker_concurrency: 5
+  grpc_client_config:
+    max_recv_msg_size: 104857600
+    max_send_msg_size: 104857600
+    grpc_compression: ""
+    rate_limit: 0
+    rate_limit_burst: 0
+    backoff_on_ratelimits: false
+    backoff_config:
+      min_period: 100ms
+      max_period: 10s
+      max_retries: 10
+    tls_enabled: false
+    tls_cert_path: ""
+    tls_key_path: ""
+    tls_ca_path: ""
+    tls_server_name: ""
+    tls_insecure_skip_verify: false
+    tls_cipher_suites: ""
+    tls_min_version: ""
+  instance_interface_names:
+    - eth0
+  address: ""
+  port: 0
+  split_queries_by_interval: 24h0m0s
+  align_queries_with_step: false
+  results_cache:
+    backend: ""
+    memcached:
+      addresses: ""
+      timeout: 200ms
+      max_idle_connections: 100
+      max_async_concurrency: 50
+      max_async_buffer_size: 25000
+      max_get_multi_concurrency: 100
+      max_get_multi_batch_size: 100
+      max_item_size: 1048576
+    compression: ""
+  cache_results: false
+  max_retries: 5
+  parallelize_shardable_queries: true
+  cache_unaligned_requests: false
+  downstream_url: ""
+blocks_storage:
+  backend: s3
+  s3:
+    endpoint: mimir-minio.mimir.svc:9000
+    region: ""
+    bucket_name: mimir-tsdb
+    secret_access_key: '********'
+    access_key_id: grafana-mimir
+    insecure: true
+    signature_version: v4
+    sse:
+      type: ""
+      kms_key_id: ""
+      kms_encryption_context: ""
+    http:
+      idle_conn_timeout: 1m30s
+      response_header_timeout: 2m0s
+      insecure_skip_verify: false
+      tls_handshake_timeout: 10s
+      expect_continue_timeout: 1s
+      max_idle_connections: 100
+      max_idle_connections_per_host: 100
+      max_connections_per_host: 0
+  gcs:
+    bucket_name: ""
+    service_account: ""
+  azure:
+    account_name: ""
+    account_key: ""
+    container_name: ""
+    endpoint_suffix: ""
+    max_retries: 20
+    msi_resource: ""
+    user_assigned_id: ""
+  swift:
+    auth_version: 0
+    auth_url: ""
+    username: ""
+    user_domain_name: ""
+    user_domain_id: ""
+    user_id: ""
+    password: ""
+    domain_id: ""
+    domain_name: ""
+    project_id: ""
+    project_name: ""
+    project_domain_id: ""
+    project_domain_name: ""
+    region_name: ""
+    container_name: ""
+    max_retries: 3
+    connect_timeout: 10s
+    request_timeout: 5s
+  filesystem:
+    dir: blocks
+  storage_prefix: ""
+  bucket_store:
+    sync_dir: /data/tsdb-sync
+    sync_interval: 15m0s
+    max_concurrent: 100
+    tenant_sync_concurrency: 10
+    block_sync_concurrency: 20
+    meta_sync_concurrency: 20
+    consistency_delay: 0s
+    index_cache:
+      backend: inmemory
+      memcached:
+        addresses: ""
+        timeout: 200ms
+        max_idle_connections: 100
+        max_async_concurrency: 50
+        max_async_buffer_size: 25000
+        max_get_multi_concurrency: 100
+        max_get_multi_batch_size: 100
+        max_item_size: 1048576
+      inmemory:
+        max_size_bytes: 1073741824
+    chunks_cache:
+      backend: ""
+      memcached:
+        addresses: ""
+        timeout: 200ms
+        max_idle_connections: 100
+        max_async_concurrency: 50
+        max_async_buffer_size: 25000
+        max_get_multi_concurrency: 100
+        max_get_multi_batch_size: 100
+        max_item_size: 1048576
+      subrange_size: 16000
+      max_get_range_requests: 3
+      attributes_ttl: 168h0m0s
+      attributes_in_memory_max_items: 50000
+      subrange_ttl: 24h0m0s
+    metadata_cache:
+      backend: ""
+      memcached:
+        addresses: ""
+        timeout: 200ms
+        max_idle_connections: 100
+        max_async_concurrency: 50
+        max_async_buffer_size: 25000
+        max_get_multi_concurrency: 100
+        max_get_multi_batch_size: 100
+        max_item_size: 1048576
+      tenants_list_ttl: 15m0s
+      tenant_blocks_list_ttl: 5m0s
+      chunks_list_ttl: 24h0m0s
+      metafile_exists_ttl: 2h0m0s
+      metafile_doesnt_exist_ttl: 5m0s
+      metafile_content_ttl: 24h0m0s
+      metafile_max_size_bytes: 1048576
+      metafile_attributes_ttl: 168h0m0s
+      block_index_attributes_ttl: 168h0m0s
+      bucket_index_content_ttl: 5m0s
+      bucket_index_max_size_bytes: 1048576
+    ignore_deletion_mark_delay: 1h0m0s
+    bucket_index:
+      enabled: true
+      update_on_error_interval: 1m0s
+      idle_timeout: 1h0m0s
+      max_stale_period: 1h0m0s
+    ignore_blocks_within: 10h0m0s
+    max_chunk_pool_bytes: 12884901888
+    chunk_pool_min_bucket_size_bytes: 16000
+    chunk_pool_max_bucket_size_bytes: 50000000
+    series_hash_cache_max_size_bytes: 1073741824
+    index_header_lazy_loading_enabled: true
+    index_header_lazy_loading_idle_timeout: 1h0m0s
+    partitioner_max_gap_bytes: 524288
+    postings_offsets_in_mem_sampling: 32
+    index_header:
+      map_populate_enabled: false
+      stream_reader_enabled: false
+      stream_reader_max_idle_file_handles: 1
+    streaming_series_batch_size: 0
+  tsdb:
+    dir: /data/tsdb
+    block_ranges_period:
+      - 2h0m0s
+    retention_period: 24h0m0s
+    ship_interval: 1m0s
+    ship_concurrency: 10
+    head_compaction_interval: 1m0s
+    head_compaction_concurrency: 1
+    head_compaction_idle_timeout: 1h0m0s
+    head_chunks_write_buffer_size_bytes: 4194304
+    head_chunks_end_time_variance: 0
+    stripe_size: 16384
+    wal_compression_enabled: false
+    wal_segment_size_bytes: 134217728
+    flush_blocks_on_shutdown: false
+    close_idle_tsdb_timeout: 13h0m0s
+    memory_snapshot_on_shutdown: false
+    head_chunks_write_queue_size: 1000000
+    series_hash_cache_max_size_bytes: 1073741824
+    max_tsdb_opening_concurrency_on_startup: 10
+    out_of_order_capacity_max: 32
+    head_postings_for_matchers_cache_ttl: 10s
+    head_postings_for_matchers_cache_size: 100
+    head_postings_for_matchers_cache_force: false
+  ephemeral_tsdb:
+    retention_period: 10m0s
+    head_chunks_write_buffer_size_bytes: 4194304
+    head_chunks_end_time_variance: 0
+    stripe_size: 16384
+    head_chunks_write_queue_size: 1000000
+    head_postings_for_matchers_cache_ttl: 10s
+    head_postings_for_matchers_cache_size: 100
+    head_postings_for_matchers_cache_force: false
+compactor:
+  block_ranges:
+    - 2h0m0s
+    - 12h0m0s
+    - 24h0m0s
+  block_sync_concurrency: 8
+  meta_sync_concurrency: 20
+  consistency_delay: 0s
+  data_dir: /data
+  compaction_interval: 30m0s
+  compaction_retries: 3
+  compaction_concurrency: 1
+  cleanup_interval: 15m0s
+  cleanup_concurrency: 20
+  deletion_delay: 2h0m0s
+  tenant_cleanup_delay: 6h0m0s
+  max_compaction_time: 1h0m0s
+  max_opening_blocks_concurrency: 4
+  max_closing_blocks_concurrency: 2
+  symbols_flushers_concurrency: 4
+  enabled_tenants: ""
+  disabled_tenants: ""
+  sharding_ring:
+    kvstore:
+      store: memberlist
+      prefix: collectors/
+      consul:
+        host: localhost:8500
+        acl_token: ""
+        http_client_timeout: 20s
+        consistent_reads: false
+        watch_rate_limit: 1
+        watch_burst_size: 1
+        cas_retry_delay: 1s
+      etcd:
+        endpoints: []
+        dial_timeout: 10s
+        max_retries: 10
+        tls_enabled: false
+        tls_cert_path: ""
+        tls_key_path: ""
+        tls_ca_path: ""
+        tls_server_name: ""
+        tls_insecure_skip_verify: false
+        tls_cipher_suites: ""
+        tls_min_version: ""
+        username: ""
+        password: ""
+      multi:
+        primary: ""
+        secondary: ""
+        mirror_enabled: false
+        mirror_timeout: 2s
+    heartbeat_period: 15s
+    heartbeat_timeout: 1m0s
+    wait_stability_min_duration: 1m0s
+    wait_stability_max_duration: 5m0s
+    instance_id: mimir-query-frontend-57d777cc86-7w8zx
+    instance_interface_names:
+      - eth0
+    instance_port: 0
+    instance_addr: ""
+    wait_active_instance_timeout: 10m0s
+  compaction_jobs_order: smallest-range-oldest-blocks-first
+store_gateway:
+  sharding_ring:
+    kvstore:
+      store: memberlist
+      prefix: multi-zone/
+      consul:
+        host: localhost:8500
+        acl_token: ""
+        http_client_timeout: 20s
+        consistent_reads: false
+        watch_rate_limit: 1
+        watch_burst_size: 1
+        cas_retry_delay: 1s
+      etcd:
+        endpoints: []
+        dial_timeout: 10s
+        max_retries: 10
+        tls_enabled: false
+        tls_cert_path: ""
+        tls_key_path: ""
+        tls_ca_path: ""
+        tls_server_name: ""
+        tls_insecure_skip_verify: false
+        tls_cipher_suites: ""
+        tls_min_version: ""
+        username: ""
+        password: ""
+      multi:
+        primary: ""
+        secondary: ""
+        mirror_enabled: false
+        mirror_timeout: 2s
+    heartbeat_period: 15s
+    heartbeat_timeout: 1m0s
+    replication_factor: 3
+    tokens_file_path: /data/tokens
+    zone_awareness_enabled: true
+    wait_stability_min_duration: 1m0s
+    wait_stability_max_duration: 5m0s
+    instance_id: mimir-query-frontend-57d777cc86-7w8zx
+    instance_interface_names:
+      - eth0
+    instance_port: 0
+    instance_addr: ""
+    instance_availability_zone: ""
+    unregister_on_shutdown: true
+tenant_federation:
+  enabled: false
+activity_tracker:
+  filepath: /active-query-tracker/activity.log
+  max_entries: 1024
+ruler:
+  external_url: ""
+  ruler_client:
+    max_recv_msg_size: 104857600
+    max_send_msg_size: 104857600
+    grpc_compression: ""
+    rate_limit: 0
+    rate_limit_burst: 0
+    backoff_on_ratelimits: false
+    backoff_config:
+      min_period: 100ms
+      max_period: 10s
+      max_retries: 10
+    tls_enabled: false
+    tls_cert_path: ""
+    tls_key_path: ""
+    tls_ca_path: ""
+    tls_server_name: ""
+    tls_insecure_skip_verify: false
+    tls_cipher_suites: ""
+    tls_min_version: ""
+  evaluation_interval: 1m0s
+  poll_interval: 1m0s
+  rule_path: /data
+  alertmanager_url: dnssrvnoa+http://_http-metrics._tcp.mimir-alertmanager-headless.mimir.svc.cluster.local/alertmanager
+  alertmanager_refresh_interval: 1m0s
+  notification_queue_capacity: 10000
+  notification_timeout: 10s
+  alertmanager_client:
+    tls_enabled: true
+    tls_cert_path: ""
+    tls_key_path: ""
+    tls_ca_path: ""
+    tls_server_name: ""
+    tls_insecure_skip_verify: false
+    tls_cipher_suites: ""
+    tls_min_version: ""
+    basic_auth_username: ""
+    basic_auth_password: ""
+  for_outage_tolerance: 1h0m0s
+  for_grace_period: 2m0s
+  resend_delay: 1m0s
+  ring:
+    kvstore:
+      store: memberlist
+      prefix: rulers/
+      consul:
+        host: localhost:8500
+        acl_token: ""
+        http_client_timeout: 20s
+        consistent_reads: false
+        watch_rate_limit: 1
+        watch_burst_size: 1
+        cas_retry_delay: 1s
+      etcd:
+        endpoints: []
+        dial_timeout: 10s
+        max_retries: 10
+        tls_enabled: false
+        tls_cert_path: ""
+        tls_key_path: ""
+        tls_ca_path: ""
+        tls_server_name: ""
+        tls_insecure_skip_verify: false
+        tls_cipher_suites: ""
+        tls_min_version: ""
+        username: ""
+        password: ""
+      multi:
+        primary: ""
+        secondary: ""
+        mirror_enabled: false
+        mirror_timeout: 2s
+    heartbeat_period: 15s
+    heartbeat_timeout: 1m0s
+    instance_id: mimir-query-frontend-57d777cc86-7w8zx
+    instance_interface_names:
+      - eth0
+    instance_port: 0
+    instance_addr: ""
+    num_tokens: 128
+  enable_api: true
+  enabled_tenants: ""
+  disabled_tenants: ""
+  query_stats_enabled: false
+  query_frontend:
+    address: ""
+    grpc_client_config:
+      max_recv_msg_size: 104857600
+      max_send_msg_size: 104857600
+      grpc_compression: ""
+      rate_limit: 0
+      rate_limit_burst: 0
+      backoff_on_ratelimits: false
+      backoff_config:
+        min_period: 100ms
+        max_period: 10s
+        max_retries: 10
+      tls_enabled: false
+      tls_cert_path: ""
+      tls_key_path: ""
+      tls_ca_path: ""
+      tls_server_name: ""
+      tls_insecure_skip_verify: false
+      tls_cipher_suites: ""
+      tls_min_version: ""
+  tenant_federation:
+    enabled: false
+ruler_storage:
+  backend: s3
+  s3:
+    endpoint: mimir-minio.mimir.svc:9000
+    region: ""
+    bucket_name: mimir-ruler
+    secret_access_key: '********'
+    access_key_id: grafana-mimir
+    insecure: true
+    signature_version: v4
+    sse:
+      type: ""
+      kms_key_id: ""
+      kms_encryption_context: ""
+    http:
+      idle_conn_timeout: 1m30s
+      response_header_timeout: 2m0s
+      insecure_skip_verify: false
+      tls_handshake_timeout: 10s
+      expect_continue_timeout: 1s
+      max_idle_connections: 100
+      max_idle_connections_per_host: 100
+      max_connections_per_host: 0
+  gcs:
+    bucket_name: ""
+    service_account: ""
+  azure:
+    account_name: ""
+    account_key: ""
+    container_name: ""
+    endpoint_suffix: ""
+    max_retries: 20
+    msi_resource: ""
+    user_assigned_id: ""
+  swift:
+    auth_version: 0
+    auth_url: ""
+    username: ""
+    user_domain_name: ""
+    user_domain_id: ""
+    user_id: ""
+    password: ""
+    domain_id: ""
+    domain_name: ""
+    project_id: ""
+    project_name: ""
+    project_domain_id: ""
+    project_domain_name: ""
+    region_name: ""
+    container_name: ""
+    max_retries: 3
+    connect_timeout: 10s
+    request_timeout: 5s
+  filesystem:
+    dir: ruler
+  storage_prefix: ""
+  local:
+    directory: ""
+alertmanager:
+  data_dir: /data
+  retention: 120h0m0s
+  external_url: /alertmanager
+  poll_interval: 15s
+  max_recv_msg_size: 104857600
+  sharding_ring:
+    kvstore:
+      store: memberlist
+      prefix: alertmanagers/
+      consul:
+        host: localhost:8500
+        acl_token: ""
+        http_client_timeout: 20s
+        consistent_reads: false
+        watch_rate_limit: 1
+        watch_burst_size: 1
+        cas_retry_delay: 1s
+      etcd:
+        endpoints: []
+        dial_timeout: 10s
+        max_retries: 10
+        tls_enabled: false
+        tls_cert_path: ""
+        tls_key_path: ""
+        tls_ca_path: ""
+        tls_server_name: ""
+        tls_insecure_skip_verify: false
+        tls_cipher_suites: ""
+        tls_min_version: ""
+        username: ""
+        password: ""
+      multi:
+        primary: ""
+        secondary: ""
+        mirror_enabled: false
+        mirror_timeout: 2s
+    heartbeat_period: 15s
+    heartbeat_timeout: 1m0s
+    replication_factor: 3
+    zone_awareness_enabled: false
+    instance_id: mimir-query-frontend-57d777cc86-7w8zx
+    instance_interface_names:
+      - eth0
+    instance_port: 0
+    instance_addr: ""
+    instance_availability_zone: ""
+  fallback_config_file: /configs/alertmanager_fallback_config.yaml
+  peer_timeout: 15s
+  enable_api: true
+  max_concurrent_get_requests_per_tenant: 0
+  alertmanager_client:
+    remote_timeout: 2s
+    max_recv_msg_size: 104857600
+    max_send_msg_size: 104857600
+    grpc_compression: ""
+    rate_limit: 0
+    rate_limit_burst: 0
+    backoff_on_ratelimits: false
+    backoff_config:
+      min_period: 100ms
+      max_period: 10s
+      max_retries: 10
+    tls_enabled: false
+    tls_cert_path: ""
+    tls_key_path: ""
+    tls_ca_path: ""
+    tls_server_name: ""
+    tls_insecure_skip_verify: false
+    tls_cipher_suites: ""
+    tls_min_version: ""
+  persist_interval: 15m0s
+alertmanager_storage:
+  backend: s3
+  s3:
+    endpoint: mimir-minio.mimir.svc:9000
+    region: ""
+    bucket_name: mimir-ruler
+    secret_access_key: '********'
+    access_key_id: grafana-mimir
+    insecure: true
+    signature_version: v4
+    sse:
+      type: ""
+      kms_key_id: ""
+      kms_encryption_context: ""
+    http:
+      idle_conn_timeout: 1m30s
+      response_header_timeout: 2m0s
+      insecure_skip_verify: false
+      tls_handshake_timeout: 10s
+      expect_continue_timeout: 1s
+      max_idle_connections: 100
+      max_idle_connections_per_host: 100
+      max_connections_per_host: 0
+  gcs:
+    bucket_name: ""
+    service_account: ""
+  azure:
+    account_name: ""
+    account_key: ""
+    container_name: ""
+    endpoint_suffix: ""
+    max_retries: 20
+    msi_resource: ""
+    user_assigned_id: ""
+  swift:
+    auth_version: 0
+    auth_url: ""
+    username: ""
+    user_domain_name: ""
+    user_domain_id: ""
+    user_id: ""
+    password: ""
+    domain_id: ""
+    domain_name: ""
+    project_id: ""
+    project_name: ""
+    project_domain_id: ""
+    project_domain_name: ""
+    region_name: ""
+    container_name: ""
+    max_retries: 3
+    connect_timeout: 10s
+    request_timeout: 5s
+  filesystem:
+    dir: alertmanager
+  storage_prefix: ""
+  local:
+    path: ""
+runtime_config:
+  period: 10s
+  file: /var/mimir/runtime.yaml
+memberlist:
+  node_name: ""
+  randomize_node_name: true
+  stream_timeout: 10s
+  retransmit_factor: 4
+  pull_push_interval: 30s
+  gossip_interval: 200ms
+  gossip_nodes: 3
+  gossip_to_dead_nodes_time: 30s
+  dead_node_reclaim_time: 0s
+  compression_enabled: false
+  advertise_addr: ""
+  advertise_port: 7946
+  cluster_label: ""
+  cluster_label_verification_disabled: false
+  join_members:
+    - dns+mimir-gossip-ring.mimir.svc.cluster.local:7946
+  min_join_backoff: 1s
+  max_join_backoff: 1m0s
+  max_join_retries: 10
+  abort_if_cluster_join_fails: false
+  rejoin_interval: 0s
+  left_ingesters_timeout: 5m0s
+  leave_timeout: 20s
+  message_history_buffer_bytes: 0
+  bind_addr: []
+  bind_port: 7946
+  packet_dial_timeout: 2s
+  packet_write_timeout: 5s
+  tls_enabled: false
+  tls_cert_path: ""
+  tls_key_path: ""
+  tls_ca_path: ""
+  tls_server_name: ""
+  tls_insecure_skip_verify: false
+  tls_cipher_suites: ""
+  tls_min_version: ""
+query_scheduler:
+  max_outstanding_requests_per_tenant: 800
+  querier_forget_delay: 0s
+  grpc_client_config:
+    max_recv_msg_size: 104857600
+    max_send_msg_size: 104857600
+    grpc_compression: ""
+    rate_limit: 0
+    rate_limit_burst: 0
+    backoff_on_ratelimits: false
+    backoff_config:
+      min_period: 100ms
+      max_period: 10s
+      max_retries: 10
+    tls_enabled: false
+    tls_cert_path: ""
+    tls_key_path: ""
+    tls_ca_path: ""
+    tls_server_name: ""
+    tls_insecure_skip_verify: false
+    tls_cipher_suites: ""
+    tls_min_version: ""
+  service_discovery_mode: dns
+  ring:
+    kvstore:
+      store: memberlist
+      prefix: collectors/
+      consul:
+        host: localhost:8500
+        acl_token: ""
+        http_client_timeout: 20s
+        consistent_reads: false
+        watch_rate_limit: 1
+        watch_burst_size: 1
+        cas_retry_delay: 1s
+      etcd:
+        endpoints: []
+        dial_timeout: 10s
+        max_retries: 10
+        tls_enabled: false
+        tls_cert_path: ""
+        tls_key_path: ""
+        tls_ca_path: ""
+        tls_server_name: ""
+        tls_insecure_skip_verify: false
+        tls_cipher_suites: ""
+        tls_min_version: ""
+        username: ""
+        password: ""
+      multi:
+        primary: ""
+        secondary: ""
+        mirror_enabled: false
+        mirror_timeout: 2s
+    heartbeat_period: 15s
+    heartbeat_timeout: 1m0s
+    instance_id: mimir-query-frontend-57d777cc86-7w8zx
+    instance_interface_names:
+      - eth0
+    instance_port: 0
+    instance_addr: ""
+  max_used_instances: 0
+usage_stats:
+  enabled: true
+  installation_mode: helm
+overrides_exporter:
+  ring:
+    enabled: false
+    kvstore:
+      store: memberlist
+      prefix: collectors/
+      consul:
+        host: localhost:8500
+        acl_token: ""
+        http_client_timeout: 20s
+        consistent_reads: false
+        watch_rate_limit: 1
+        watch_burst_size: 1
+        cas_retry_delay: 1s
+      etcd:
+        endpoints: []
+        dial_timeout: 10s
+        max_retries: 10
+        tls_enabled: false
+        tls_cert_path: ""
+        tls_key_path: ""
+        tls_ca_path: ""
+        tls_server_name: ""
+        tls_insecure_skip_verify: false
+        tls_cipher_suites: ""
+        tls_min_version: ""
+        username: ""
+        password: ""
+      multi:
+        primary: ""
+        secondary: ""
+        mirror_enabled: false
+        mirror_timeout: 2s
+    heartbeat_period: 15s
+    heartbeat_timeout: 1m0s
+    wait_stability_min_duration: 0s
+    wait_stability_max_duration: 5m0s
+    instance_id: mimir-query-frontend-57d777cc86-7w8zx
+    instance_interface_names:
+      - eth0
+    instance_port: 0
+    instance_addr: ""
+common:
+  storage:
+    backend: filesystem
+    s3:
+      endpoint: ""
+      region: ""
+      bucket_name: ""
+      secret_access_key: ""
+      access_key_id: ""
+      insecure: false
+      signature_version: v4
+      sse:
+        type: ""
+        kms_key_id: ""
+        kms_encryption_context: ""
+      http:
+        idle_conn_timeout: 1m30s
+        response_header_timeout: 2m0s
+        insecure_skip_verify: false
+        tls_handshake_timeout: 10s
+        expect_continue_timeout: 1s
+        max_idle_connections: 100
+        max_idle_connections_per_host: 100
+        max_connections_per_host: 0
+    gcs:
+      bucket_name: ""
+      service_account: ""
+    azure:
+      account_name: ""
+      account_key: ""
+      container_name: ""
+      endpoint_suffix: ""
+      max_retries: 20
+      msi_resource: ""
+      user_assigned_id: ""
+    swift:
+      auth_version: 0
+      auth_url: ""
+      username: ""
+      user_domain_name: ""
+      user_domain_id: ""
+      user_id: ""
+      password: ""
+      domain_id: ""
+      domain_name: ""
+      project_id: ""
+      project_name: ""
+      project_domain_id: ""
+      project_domain_name: ""
+      region_name: ""
+      container_name: ""
+      max_retries: 3
+      connect_timeout: 10s
+      request_timeout: 5s
+    filesystem:
+      dir: ""

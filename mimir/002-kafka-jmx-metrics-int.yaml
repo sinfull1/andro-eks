@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kafka-metrics
+  namespace: default
+stringData:
+  jobs.yaml: |
+    - job_name: integrations/kafka
+      scrape_interval: 60s
+      static_configs:
+      - targets:
+        - kafka-jmx-metrics.kafka.svc.cluster.local:5556
+      scheme: http

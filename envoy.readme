@@ -1,0 +1,48 @@
+ 2041  docker build -t envoy .
+ 2042  docker tag envoy 395283154402.dkr.ecr.ap-south-1.amazonaws.com/andromeda:envoy
+ 2043  docker push 395283154402.dkr.ecr.ap-south-1.amazonaws.com/andromeda:envoy
+  - name: listener_0
+    address:
+      socket_address: {address: 0.0.0.0, port_value: 8080}
+    filter_chains:
+      - filters:
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                stat_prefix: ingress_http
+                codec_type: AUTO
+                route_config:
+                  name: local_route
+                  virtual_hosts:
+                  - name: local_service
+                    domains: ["*"]
+                    routes:
+                    - match: { prefix: "/" }
+                      route: { cluster: kafka, timeout: 60s }
+                http_filters:
+                - name: envoy.filters.http.router
+                  typed_config:
+                    "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+
+Configuring Envoy to accept 1 million connections will require adjusting several settings related to the operating system and Envoy configuration. Here are some general steps to consider:
+
+Increase the file descriptor limit: Envoy relies heavily on file descriptors to manage network connections. To support 1 million connections, you may need to increase the maximum number of file descriptors that the operating system allows. This can typically be done by editing the /etc/security/limits.conf file and adding lines like:
+markdown
+Copy code
+*    soft    nofile    1000000
+*    hard    nofile    1000000
+These settings allow any user to have up to 1 million file descriptors. You may need to adjust the settings based on your system requirements and available resources.
+
+Adjust the Envoy configuration: Envoy has several configuration settings that control its ability to accept connections. Here are some settings to consider adjusting:
+
+listeners.backlog_size: This setting controls the maximum number of connections that Envoy can accept in a backlog queue. Increasing this setting may help to prevent connections from being dropped if Envoy is unable to accept them immediately.
+
+listeners.socket_options: This setting allows you to specify additional socket options for the listener sockets. You may want to experiment with settings like SO_REUSEPORT or TCP_DEFER_ACCEPT to improve connection handling.
+
+concurrency: This setting controls the number of threads that Envoy uses to process requests. Increasing this setting may help to handle more connections simultaneously.
+
+buffer_limits: This setting controls the maximum size of the buffer used to read and write data to and from the network. Increasing this setting may help to improve the throughput of Envoy.
+
+Monitor performance: Once you have made changes to your Envoy configuration, it's important to monitor the performance of the system to ensure that it can handle the expected number of connections. You can use tools like netstat to monitor the number of open connections, and tools like top or htop to monitor CPU and memory usage. You may also want to use a load testing tool to simulate high volumes of traffic to your system.
+
+Keep in mind that the number of connections that a system can handle will depend on many factors, including hardware resources, network bandwidth, and the specific use case of the system. Configuring Envoy to handle 1 million connections will likely require careful tuning and testing to ensure that it can perform reliably under high loads.

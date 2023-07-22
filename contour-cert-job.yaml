@@ -1,0 +1,83 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+    helm.sh/hook-weight: "1"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"batch/v1","kind":"Job","metadata":{"annotations":{"helm.sh/hook":"pre-install,pre-upgrade","helm.sh/hook-delete-policy":"before-hook-creation,hook-succeeded","helm.sh/hook-weight":"1"},"labels":{"app.kubernetes.io/component":"contour-certgen","app.kubernetes.io/instance":"contour","app.kubernetes.io/managed-by":"pulumi","app.kubernetes.io/name":"contour","helm.sh/chart":"contour-11.0.0"},"name":"contour-contour-certgen","namespace":"projectcontour"},"spec":{"backoffLimit":1,"completions":1,"parallelism":1,"template":{"metadata":{"labels":{"app.kubernetes.io/component":"contour-certgen","app.kubernetes.io/instance":"contour","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"contour","helm.sh/chart":"contour-11.0.0"}},"spec":{"containers":[{"args":["certgen","--kube","--incluster","--overwrite","--secrets-format=compact","--namespace=$(CONTOUR_NAMESPACE)","--certificate-lifetime=365"],"command":["contour"],"env":[{"name":"CONTOUR_NAMESPACE","valueFrom":{"fieldRef":{"fieldPath":"metadata.namespace"}}}],"image":"docker.io/bitnami/contour:1.24.1-debian-11-r0","imagePullPolicy":"IfNotPresent","name":"contour","resources":{"limits":{},"requests":{}},"securityContext":{"runAsNonRoot":true,"runAsUser":1001}}],"restartPolicy":"Never","securityContext":{"fsGroup":1001},"serviceAccountName":"contour-contour-certgen"}}}}
+  creationTimestamp: "2023-02-27T04:35:57Z"
+  generation: 1
+  labels:
+    app.kubernetes.io/component: contour-certgen
+    app.kubernetes.io/instance: contour
+    app.kubernetes.io/managed-by: pulumi
+    app.kubernetes.io/name: contour
+    helm.sh/chart: contour-11.0.0
+  name: contour-contour-certgen
+  namespace: projectcontour
+
+spec:
+  backoffLimit: 1
+  completionMode: NonIndexed
+  completions: 1
+  parallelism: 1
+  suspend: false
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/component: contour-certgen
+        app.kubernetes.io/instance: contour
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: contour
+        controller-uid: c9bdd904-0c1d-4c3e-ae96-6cc6193b65f9
+        helm.sh/chart: contour-11.0.0
+        job-name: contour-contour-certgen
+    spec:
+      containers:
+      - args:
+        - certgen
+        - --kube
+        - --incluster
+        - --overwrite
+        - --secrets-format=compact
+        - --namespace=$(CONTOUR_NAMESPACE)
+        - --certificate-lifetime=365
+        command:
+        - contour
+        env:
+        - name: CONTOUR_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        image: docker.io/bitnami/contour:1.24.1-debian-11-r0
+        imagePullPolicy: IfNotPresent
+        name: contour
+        resources: {}
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1001
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 1001
+      serviceAccount: contour-contour-certgen
+      serviceAccountName: contour-contour-certgen
+      terminationGracePeriodSeconds: 30
+status:
+  conditions:
+  - lastProbeTime: "2023-02-27T04:36:26Z"
+    lastTransitionTime: "2023-02-27T04:36:26Z"
+    message: Job has reached the specified backoff limit
+    reason: BackoffLimitExceeded
+    status: "True"
+    type: Failed
+  failed: 2
+  ready: 0
+  startTime: "2023-02-27T04:35:57Z"

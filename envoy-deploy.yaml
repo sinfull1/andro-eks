@@ -1,0 +1,130 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: envoy-config
+  namespace: default
+stringData:
+  envoy.yaml: |
+    admin:
+      access_log_path: /dev/null
+      address:
+        socket_address:  {address: 0.0.0.0, port_value: 9901}
+    static_resources:
+      listeners:
+      - name: listener_0
+        address:
+          socket_address:
+            address: 0.0.0.0 # Allowed IP address
+            port_value: 8080  # External client will connect to this port
+        filter_chains:
+          - filters:
+                - name: envoy.filters.network.http_connection_manager
+                  typed_config:
+                    "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                    stat_prefix: ingress_http
+                    codec_type: AUTO
+                    route_config:
+                      name: local_route
+                      virtual_hosts:
+                      - name: local_service
+                        domains: ["*"]
+                        routes:
+                        - match: { prefix: "/" }
+                          route: { cluster: my_app, timeout: 60s }
+                    http_filters:
+                    - name: envoy.filters.http.router
+                      typed_config:
+                        "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+      clusters:
+        - name: my_app
+          connect_timeout: 2s
+          type: STRICT_DNS
+          dns_lookup_family: V4_ONLY
+          lb_policy: ROUND_ROBIN
+          load_assignment:
+            cluster_name: my_app
+            endpoints:
+              - lb_endpoints:
+                - endpoint:
+                    address:
+                        socket_address:
+                          address: kafka-proxy-svc.kafka-proxy.svc.cluster.local
+                          port_value: 8080
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-envoy
+  labels:
+    app: myapp-envoy
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+      targetPort: 9901
+      protocol: TCP
+    - name: kafka
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: myapp-envoy
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-envoy-internal
+  labels:
+    app: myapp-envoy
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 9901
+      protocol: TCP
+    - name: kafka
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: myapp-envoy
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-envoy
+  labels:
+    app: myapp-envoy
+spec:
+  selector:
+    matchLabels:
+      app: myapp-envoy
+  template:
+    metadata:
+      labels:
+        app: myapp-envoy
+    spec:
+      containers:
+        - name: myapp-envoy
+          image: 395283154402.dkr.ecr.ap-south-1.amazonaws.com/andromeda:envoy-15
+          imagePullPolicy: Always
+          ports:
+            - name: kafka
+              containerPort: 8080
+          volumeMounts:
+            - name: envoy-config
+              mountPath: "/etc/envoy"
+              readOnly: true
+      volumes:
+        - name: envoy-config
+          secret:
+            secretName: envoy-config
+            items:
+            - key: envoy.yaml
+              path: envoy.yaml
+

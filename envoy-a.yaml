@@ -1,0 +1,21 @@
+admin:
+  access_log_path: /tmp/admin_access.log
+  address:
+    socket_address:  {address: 0.0.0.0, port_value: 9901}
+
+static_resources:
+  listeners:
+    - name: kafka
+      address:
+        socket_address: {address: 0.0.0.0, port_value: 9902}
+      filter_chains:
+        - filters:
+            - name: envoy.filters.network.kafka_mesh
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.kafka_mesh.v3alpha.KafkaMesh
+                advertised_host: "127.0.0.1"
+                advertised_port: 9902
+                upstream_clusters:
+                - cluster_name: kafka_c1
+                  bootstrap_servers: kafka-headless.kafka.svc.cluster.local:9092
+                  partition_count: 1
